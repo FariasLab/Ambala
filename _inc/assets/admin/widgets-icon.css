@@ -1,0 +1,18 @@
+/* Icon for Custom Elementor Widgets */
+
+.abl-widget-icon {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    overflow: hidden;
+    font-weight: bold;
+    font-style: normal;
+}
+.abl-widget-icon:before {
+    content: 'a.';
+    display: block;
+    word-break: break-word;
+}

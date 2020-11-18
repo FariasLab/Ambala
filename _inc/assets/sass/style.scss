@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+/*
+Theme Name: Ambala
+Text Domain: abl
+Version: 0.1.0
+Description: Custom WordPress theme for a client e-commerce website called Ambala
+Author: Farias Lab E.I.
+Author URI: https://fariaslab.com/
+*/
+
+// Abstracts
+@import
+  'abstracts/variables',
+  'abstracts/mixins';
+
+// Vendors
+@import 'vendor/OverlayScrollbars.min';
+
+// Base
+@import
+  'base/reset',
+  'base/fonts',
+  'base/base';
+
+// Layout
+@import
+  'layout/site-header',
+  'layout/side-menu',
+  'layout/search-form',
+  'layout/side-cart',
+  'layout/products-archive';

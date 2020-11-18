@@ -1,0 +1,36 @@
+// Search Form
+
+.search-form
+  @include flex-align(null, center)
+  background: $abl-grey-field
+  height: 60px
+  padding: 0 32px
+
+  .search-input
+    flex-grow: 1
+    border: none
+    outline: none
+    background: transparent
+    font-size: 14px
+    margin-right: 16px
+
+  .btn-submit-search
+    &:hover, &:active
+      .feather-icon
+        stroke: $abl-brown-text
+
+.top-search-wrap
+
+  .overlay-main
+    max-width: 600px
+    margin: 10px auto
+    transform: translateY(-100%)
+
+  .search-form
+    background: #fff
+
+
+@media only screen and (max-width: 1023px)
+
+  .top-search-wrap .overlay-main
+    margin: 0 auto

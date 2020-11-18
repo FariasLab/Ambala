@@ -1,0 +1,30 @@
+// Side Cart
+
+.side-cart-wrap
+  font-size: 15px
+  line-height: 26px
+
+  .overlay-main
+    position: fixed
+    width: 400px
+    max-width: calc(100% - 20px)
+    height: 100%
+    background: #fff
+    right: 0
+    top: 0
+    padding-top: 32px
+    transform: translateX(100px)
+
+  @include simple-button-transitions
+
+  .btn-close-overlay
+    display: block
+    margin: 0 32px 32px auto
+    width: 16px
+    height: 16px
+
+  .inner-wrap
+    flex-grow: 1
+    overflow-y: scroll
+    border-top: 1px solid $abl-grey-field
+    padding: 32px
