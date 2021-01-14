@@ -15,7 +15,9 @@ Author URI: https://fariaslab.com/
   'abstracts/mixins';
 
 // Vendors
-@import 'vendor/OverlayScrollbars.min';
+@import
+  'vendor/OverlayScrollbars.min',
+  'vendor/swiper.min';
 
 // Base
 @import
@@ -29,4 +31,5 @@ Author URI: https://fariaslab.com/
   'layout/side-menu',
   'layout/search-form',
   'layout/side-cart',
-  'layout/products-archive';
+  'layout/products-archive',
+  'layout/single-product';

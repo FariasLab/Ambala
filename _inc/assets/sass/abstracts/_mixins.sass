@@ -14,9 +14,9 @@
 @mixin base-overlay-wrap
 
 
-@mixin simple-button-transitions
+@mixin simple-button-transitions($display: block)
   button, a
-    display: block
+    display: $display
     transition: color .3s
 
     &:hover, &:active

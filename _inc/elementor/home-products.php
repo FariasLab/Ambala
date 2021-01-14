@@ -2,6 +2,8 @@
 
 namespace Elementor;
 
+use WP_Query;
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class ABL_Home_Products extends Widget_Base
@@ -33,37 +35,23 @@ class ABL_Home_Products extends Widget_Base
 		<section class="abl-home-products">
 			<div class="site-section-inner">
 				<header class="section-header">
-                    <p class="section-tagline">Browse Our Collection</p>
+                    <p class="section-tagline">Browse Our Collections</p>
                     <h2 class="section-title">Our Products</h2>
                 </header>
-				<div class="products-archive">
-					<ul class="archives-list side-list">
-						<?php
-						$abl_locations = array( 'collections', 'product_cat', 'brands' );
-						$locations_data = get_nav_menu_locations();
 
-						foreach ( $abl_locations as $location ) {
-							abl_submenu_at( $location, $locations_data, false );
-						}
-						?>
-					</ul>
-					<div class="products-grid">
-                        <div class="product-item empty-notice">
-                            <p>No products found in this section at the moment.</p>
-                        </div>
-						<?php /* for ( $i = 0; $i < 9; $i++ ) { ?>
-							<div class="product-item">
-								<a href="#" class="img-link">
-                                    <p class="img-hover">View Product</p>
-                                </a>
-								<div class="product-details">
-                                    <a href="#" class="name-link">Product Name</a>
-                                    <p class="product-price">$ 20.00 USD</p>
-                                </div>
-							</div>
-						<?php } //*/ ?>
-					</div>
-				</div>
+				<?php
+				//$meta_query  = WC()->query->get_meta_query();
+				//$tax_query   = WC()->query->get_tax_query();
+                $products_query = new WP_Query( array(
+					'post_type' => 'product',
+					'posts_per_page' => 9,
+					'order' => 'ASC',
+                    'orderby' => 'name',
+					//'meta_query' => $meta_query,
+					//'tax_query' => $tax_query,
+				) );
+				abl_products_archive( $products_query );
+				?>
 			</div>
 		</section>
 

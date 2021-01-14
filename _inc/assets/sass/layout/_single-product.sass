@@ -1,0 +1,202 @@
+// Single Product
+
+.single-product .site-main > .product
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  flex-direction: row-reverse
+
+  .price, .product-section-title
+    display: block
+    font-weight: normal
+    font-size: 30px
+    line-height: 38px
+    margin-bottom: 15px
+
+  > .woo-variation-product-gallery
+    position: relative
+    flex-grow: 1
+    padding: 0 80px 0 0
+    margin: 0 -80px 60px 0
+    background: $abl-grey-section
+
+    &:before
+      @include content-block
+      position: absolute
+      left: 0
+      top: 0
+      width: 100vw
+      height: 100%
+      background: $abl-grey-section
+
+    > *
+      position: relative
+
+    *
+      outline: none
+
+    .woo-variation-gallery-trigger
+      transition: color .3s
+
+      &:hover, &:active
+        color: $abl-brown-text
+
+    .dashicons-search:before
+      content: '\f543'
+
+  > .summary
+    position: relative
+    width: calc(36% + 80px)
+    padding: 60px
+    margin-bottom: 60px
+    background: $abl-grey-section
+
+    &:before
+      @include content-block
+      position: absolute
+      right: 0
+      top: 0
+      width: 100vw
+      height: 100%
+      background: $abl-grey-section
+
+    > *
+      position: relative
+
+    .product_title
+      font-size: 44px
+      font-weight: normal
+      line-height: 52px
+      margin-bottom: 25px
+
+    .woocommerce-product-details__short-description, .woocommerce-variation-description
+      margin-bottom: 15px
+
+    .variations
+      position: relative
+      margin: 25px 0
+      width: 100%
+
+      @include simple-button-transitions(inline-block)
+
+      td
+        padding-right: 80px
+
+      td:last-child
+        padding-bottom: 15px
+
+      tr:first-child td:first-child
+        padding-top: 25px
+        border-top: 1px solid $abl-grey-border
+
+      tr:last-child td:last-child
+        padding-bottom: 25px
+        border-bottom: 1px solid $abl-grey-border
+
+      .reset_variations
+        position: absolute
+        right: 0
+        top: 10px
+        border: 1px solid $abl-grey-border
+        padding: 0px 10px
+        font-size: 14px
+        line-height: 26px
+        border-radius: 13px
+
+    .cart, .woocommerce-variation-add-to-cart
+
+      .screen-reader-text
+        display: none
+
+      .qty-label
+        font-size: 12px
+        line-height: 20px
+        margin-bottom: 10px
+        display: block
+        text-transform: uppercase
+
+      .qty-input-wrap
+        position: relative
+        margin-bottom: 15px
+
+        @include simple-button-transitions
+
+      .btn-change-qty
+        position: absolute
+        top: 1px
+        width: 60px
+        height: 60px
+
+      .btn-dec-qty
+        left: 1px
+
+      .btn-inc-qty
+        right: 1px
+
+      .qty, .single_add_to_cart_button
+        display: block
+        width: 100%
+        line-height: 20px
+        font-size: 14px
+        text-align: center
+        outline: none
+
+      .qty
+        background: #fff
+        border: 1px solid $abl-grey-border
+        padding: 20px 80px
+        -moz-appearance: textfield
+
+        &:focus
+          border-color: $abl-darkgrey-border
+
+        &::-webkit-outer-spin-button, &::-webkit-inner-spin-button
+          -webkit-appearance: none
+          margin: 0
+
+      .single_add_to_cart_button
+        background: $abl-brown-bg
+        color: #fff
+        text-transform: uppercase
+        padding: 20px
+        margin-bottom: 25px
+        transition: background .3s
+
+        &:hover, &:active
+          background: $abl-brown-text
+
+    .product_meta
+      padding-top: 25px
+      margin-top: 25px
+      border-top: 1px solid $abl-grey-border
+
+      @include simple-button-transitions(inline-block)
+
+      > *:not(:last-child)
+        display: block
+        margin-bottom: 15px
+
+    .terms .link-wrap:not(:last-child):after
+      content: ', '
+
+    .product-full-description
+      border-top: 1px solid $abl-grey-border
+      margin-top: 25px
+      padding-top: 25px
+
+      p:not(:last-child)
+        margin-bottom: 15px
+
+  .products-carousel-wrap
+    width: 100%
+
+    .product-section-title
+      margin-bottom: 19px
+
+  .products-carousel
+    margin: 0 -20px
+
+
+
+
+

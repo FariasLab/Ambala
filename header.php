@@ -69,4 +69,7 @@
                         </button>
                     </li>
                 </ul>
+                <p class="side-claims">
+                    Ambala Market &copy; <?php echo date('Y'); ?>
+                </p>
 			</header>

@@ -55,8 +55,8 @@ function abl_theme_support() {
 	add_theme_support( 'html5', array( 'script', 'style' ) );
 
 	add_theme_support( 'woocommerce', array(
-		'thumbnail_image_width' => 290,
-		'single_image_width'    => 550,
+		//'thumbnail_image_width' => 290,
+		//'single_image_width'    => 550,
 		//'gallery_thumbnail_image_width' => 100,
 
 		'product_grid'          => array(
@@ -76,7 +76,7 @@ add_action( 'after_setup_theme', 'abl_theme_support' );
 
 function abl_image_sizes() {
 	// Hero
-	add_image_size( 'abl_hero_1', 550, 640, true );
+	add_image_size( 'abl_hero_1_single_product', 550, 640, true );
 	add_image_size( 'abl_hero_2', 430, 640, true );
 	add_image_size( 'abl_hero_3', 380, 420, true );
 	add_image_size( 'abl_hero_3', 380, 300, true );
@@ -89,8 +89,8 @@ function abl_image_sizes() {
 	// About
 	add_image_size( 'abl_about', 660, 660 );
 
-	// Instagram
-	add_image_size( 'abl_instagram', 290, 363, true );
+	// 4 Column Grid
+	add_image_size( 'abl_4col_grid', 290, 363, true ); // 4:5 ratio, test later maybe
 }
 
 
@@ -105,15 +105,45 @@ function abl_enqueue_scripts() {
 		$theme_version,
 		true
 	);
+
+	if ( ! built_with_elementor( get_the_ID() ) || true ) {
+		wp_enqueue_script(
+            'swiper',
+            get_template_directory_uri() . '/_inc/assets/js/swiper.min.js',
+            array(),
+            '4.5.3',
+            true
+        );
+		wp_enqueue_script(
+			'abl-script',
+			get_template_directory_uri() . '/_inc/assets/js/script.js',
+			array( 'jquery', 'overlay-scrollbars', 'swiper' ),
+			$theme_version,
+			true
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'abl_enqueue_scripts' );
+
+function abl_elementor_scripts() {
+	$theme_version = wp_get_theme()->get( 'Version' );
+	wp_deregister_script( 'swiper');
+	wp_register_script(
+        'swiper',
+        get_template_directory_uri() . '/_inc/assets/js/swiper.min.js',
+        array(),
+        '4.5.1',
+        true
+    );
 	wp_enqueue_script(
 		'abl-script',
 		get_template_directory_uri() . '/_inc/assets/js/script.js',
-		array( 'jquery', 'overlay-scrollbars' ),
+		array( 'jquery', 'overlay-scrollbars', 'swiper' ),
 		$theme_version,
 		true
 	);
 }
-add_action( 'wp_enqueue_scripts', 'abl_enqueue_scripts' );
+add_action( 'elementor/frontend/before_enqueue_scripts', 'abl_elementor_scripts' );
 
 
 // Navigation Menus
@@ -150,6 +180,125 @@ function abl_footer_parts() {
 	get_template_part( '_inc/partials/side-cart' );
 }
 add_action( 'wp_footer', 'abl_footer_parts' );
+
+
+add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
+add_filter( 'woocommerce_product_tabs', '__return_empty_array', 9999 );
+add_filter( 'wc_product_sku_enabled', '__return_false' );
+
+remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
+remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
+remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
+
+add_action( 'woocommerce_before_main_content', 'abl_wc_before', 10 );
+add_action( 'woocommerce_after_main_content', 'abl_wc_after', 10 );
+add_action( 'woocommerce_product_meta_end', 'abl_product_description', 10, 2 );
+
+function abl_wc_before() {
+	echo '<main class="site-main site-section-inner">';
+}
+function abl_wc_after() {
+	echo '</main>';
+}
+
+function abl_product_terms( $taxonomy, $name_plural = '', $name_singular = '' ) {
+	global $product;
+	$terms = wc_get_product_terms( $product->id, $taxonomy );
+	if ( $terms ) {
+		echo '<p class="terms">' . ( count($terms) > 1 ? __( $name_plural, 'abl' ) : __( $name_singular, 'abl' ) ) . ': ';
+		foreach ( $terms as $term ) {
+			$brand_url = get_term_link( $term );
+			echo '<span class="link-wrap"><a href="' . $brand_url . '">' . $term->name . '</a></span>';
+		}
+		echo '</p>';
+	}
+}
+
+function abl_product_description() {
+    abl_product_terms( 'pa_brands', 'Brands', 'Brand' );
+    abl_product_terms( 'pa_collections', 'Collections', 'Collection' );
+    ?>
+
+    <div class="product-full-description">
+        <h2 class="product-section-title"><?php _e( 'Description', 'abl' ); ?></h2>
+        <?php the_content(); ?>
+    </div>
+    <?php
+}
+
+
+// Products Grid
+function abl_products_archive( WP_Query $products_query ) {
+    ?>
+    <div class="products-archive">
+        <ul class="archives-list side-list">
+			<?php
+			$abl_locations = array( 'collections', 'product_cat', 'brands' );
+			$locations_data = get_nav_menu_locations();
+
+			foreach ( $abl_locations as $location ) {
+				abl_submenu_at( $location, $locations_data, false );
+			}
+			?>
+        </ul>
+
+        <ul class="products-grid">
+			<?php
+			if ( $products_query->have_posts() ) {
+				while ( $products_query->have_posts() ) {
+					$products_query->the_post();
+					$product = wc_get_product( get_the_ID() );
+                    abl_content_product( $product );
+				}
+			} else {
+				?>
+                <div class="product-item empty-notice">
+                    <p><?php _e( 'No products found in this section at the moment.', 'abl' ); ?></p>
+                </div>
+				<?php
+			}
+			?>
+        </ul>
+    </div>
+    <?php
+}
+
+function abl_content_product( WC_Product $product, $wrap_tag = 'li' ) {
+
+    $img_id = $product->get_image_id();
+	$img_src = wp_get_attachment_image_src( $img_id, 'abl_4col_grid' );
+	?>
+
+    <<?php echo $wrap_tag; ?> class="product-archive-item">
+        <a href="<?php echo $product->get_permalink(); ?>" class="img-link">
+			<?php if ( $img_src ) { ?>
+                <img src="<?php echo $img_src[0]; ?>" class="product-img">
+				<?php
+			}
+
+			if ( $product->is_featured() ) {
+				?>
+                <p class="featured-text"><?php _e( 'Featured', 'abl' ); ?></p>
+				<?php
+			}
+
+			if ( $product->is_on_sale() ) {
+				?>
+                <p class="sale-text"><?php _e( 'On Sale', 'abl' ); ?></p>
+				<?php
+			}
+			?>
+            <p class="view-hover"><?php _e( 'View Product', 'abl' ); ?></p>
+        </a>
+        <div class="product-details">
+            <a href="#" class="name-link"><?php echo $product->get_title(); ?></a>
+            <p class="product-price"><?php echo $product->get_price_html(); ?></p>
+        </div>
+    </<?php echo $wrap_tag; ?>>
+
+    <?php
+}
 
 
 // Side Menu Submenu Helper
@@ -304,9 +453,7 @@ function merge_querystring( $url = null, $query = null, $recursive = false ) {
 	return str_replace( $url_components[ 'query' ], http_build_query( $merged_result ), $url );
 }
 
-
-// Temp attempt at solving 503 error issue on woocommerce admin areas
-//add_action( 'init', 'stop_heartbeat', 1 );
-//function stop_heartbeat() {
-//	wp_deregister_script('heartbeat');
-//}
+// Built With Elementor Helper
+function built_with_elementor( $id ) {
+	return class_exists('Elementor\Plugin') && EP::$instance->db->is_built_with_elementor( $id );
+}

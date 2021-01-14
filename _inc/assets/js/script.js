@@ -66,6 +66,14 @@
                 $sideCartWrap.addClass( 'show' );
             } );
 
+            const productsSwiper = new Swiper('.products-carousel', {
+                slidesPerView: 4,
+                speed: 500,
+                // loop: true,
+                grabCursor: true
+            });
+
+            console.log( 'carousel initiated!', productsSwiper );
         }
 
         init();

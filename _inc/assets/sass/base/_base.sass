@@ -17,19 +17,50 @@ button
 svg
   display: block
 
+ins
+  text-decoration: none
+
 .site-wrap
   min-width: 320px
   min-height: 100vh
   display: flex
   flex-direction: column
+  overflow: hidden
 
 .site-main
   padding-top: 80px
 
 .site-section-inner
-  width: 100%
+  width: calc(100% - 160px)
   max-width: 1280px
   margin: 0 auto
+
+.pattern-bg
+  color: #fff
+  background: #000 url("_inc/assets/img/african-pattern.svg")
+
+.section-header
+  margin-bottom: 60px
+  text-align: center
+
+.page-header
+  @include flex-align(center, center)
+  flex-direction: column
+  min-height: 300px
+  padding: 70px 80px 70px 0
+  margin-right: -80px
+
+.section-tagline
+  font-family: $abl-tagline-font
+  font-size: 12px
+  line-height: 1.2
+  font-weight: 900
+  text-transform: uppercase
+
+.section-title
+  font-size: 44px
+  font-weight: normal
+  line-height: 1.2
 
 .feather-icon
   fill: none
@@ -77,22 +108,6 @@ svg
     .overlay-main
       transform: none
 
-.section-header
-  margin-bottom: 60px
-  text-align: center
-
-.section-tagline
-  font-family: $abl-tagline-font
-  font-size: 12px
-  line-height: 1.2
-  font-weight: 900
-  text-transform: uppercase
-
-.section-title
-  font-size: 44px
-  font-weight: normal
-  line-height: 1.2
-
 .side-list
 
   > li:not(:last-child)
@@ -109,16 +124,17 @@ svg
     line-height: 34px
 
 
-@media only screen and (max-width: 1439px)
-
-  .site-main
-    margin: 0 80px
-
 @media only screen and (max-width: 1023px)
 
   .site-main
     padding-top: 60px
-    margin: 0 22px
+
+  .site-section-inner
+    width: calc(100% - 44px)
+
+  .page-header
+    margin-right: -22px
+    padding-right: 22px
 
 
 @media only screen and (max-width: 767px)
@@ -126,3 +142,10 @@ svg
   .site-main
     padding-top: 40px
     margin: 0 12px
+
+  .site-section-inner
+    width: calc(100% - 24px)
+
+  .page-header
+    margin-right: -12px
+    padding-right: 12px
